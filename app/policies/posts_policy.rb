@@ -14,6 +14,7 @@ class PostsPolicy
         new(user, post).create?
     end
 
+
     def new?
         # If user role is editor or above(refer to User model)
         User.roles[user.role] > 1
