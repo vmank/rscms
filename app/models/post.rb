@@ -1,4 +1,7 @@
 class Post < ApplicationRecord
+  validates_presence_of :title
+  validates_presence_of :content
+
   after_initialize :set_default_status
 
   # Post statuses
