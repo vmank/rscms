@@ -15,11 +15,22 @@ class PostsController < ApplicationController
 
   # GET /posts/new
   def new
-    @post = Post.new
+    if PostsPolicy.new?(current_user)
+			@post = Post.new
+		else
+      head :unauthorized
+      # Render generic template
+		end
   end
 
   # GET /posts/1/edit
   def edit
+    if PostsPolicy.edit?(current_user, @post)
+			render :edit
+		else
+      head :unauthorized
+      # Render generic template
+		end
   end
 
   # POST /posts
