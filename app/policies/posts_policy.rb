@@ -27,6 +27,10 @@ class PostsPolicy
         new(user, post).update?
     end
 
+    def self.destroy?(user)
+        new(user).destroy?
+    end
+
 
 
     def new?

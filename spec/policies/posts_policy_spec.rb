@@ -162,12 +162,12 @@ RSpec.describe PostsPolicy do
 
     describe '.destroy?' do
         it 'returns true if role is moderator or above' do
-            post_policy = PostsPolicy.create?(moderator)
+            post_policy = PostsPolicy.destroy?(moderator)
             expect( post_policy ).to eq(true)
         end
 
         it 'returns false if role is below moderator' do
-            post_policy = PostsPolicy.create?(editor)
+            post_policy = PostsPolicy.destroy?(editor)
             expect( post_policy ).to eq(false)
 	    end
     end
