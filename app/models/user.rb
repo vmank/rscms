@@ -9,6 +9,11 @@ class User < ApplicationRecord
   enum role: [:normal, :subscriber, :editor, :moderator, :admin]
 
 
+  def guest?
+    persisted?
+  end
+
+
   private
 
   def set_default_role
