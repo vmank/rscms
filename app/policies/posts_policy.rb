@@ -23,6 +23,10 @@ class PostsPolicy
         new(user, post).edit?
     end
 
+    def self.update?(user, post)
+        new(user, post).update?
+    end
+
 
 
     def new?
@@ -44,6 +48,16 @@ class PostsPolicy
     end
 
     def edit?
+        if user.editor? && post.owned_by?(user)
+            return true
+        elsif user.moderator? || user.admin?
+            return true
+        else
+            return false
+        end
+    end
+
+    def update?
         if user.editor? && post.owned_by?(user)
             return true
         elsif user.moderator? || user.admin?
