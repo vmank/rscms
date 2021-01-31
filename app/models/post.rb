@@ -14,6 +14,10 @@ class Post < ApplicationRecord
   belongs_to :user, optional: true
 
 
+  def owned_by?(user)
+    self.user_id == (user.try(:id) || user)
+  end
+
 
   private
 

@@ -1,15 +1,11 @@
 class PostsPolicy
     attr_reader :user, :post
 
-    def initialize(user, post)
+    def initialize(user, post = :empty)
         @post = post
         @user = user
     end
 
-
-    def self.index?(user)
-        new(user).index?
-    end
 
     def self.show?(user, post)
         new(user, post).show?
@@ -23,11 +19,11 @@ class PostsPolicy
         new(user).create?
     end
 
-
-    def index?
-        # If user role is editor or above(refer to User model)
-        User.roles[user.role] > 1
+    def self.edit?(user, post)
+        new(user).edit?
     end
+
+
 
     def new?
         # If user role is editor or above(refer to User model)
@@ -45,6 +41,9 @@ class PostsPolicy
         else
             return true
         end
+    end
+
+    def edit?
     end
 
 

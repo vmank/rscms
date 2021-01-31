@@ -30,6 +30,15 @@ RSpec.describe PostsPolicy do
         )
     }
 
+    let(:post_editor) {
+        User.new(
+            email: "post_editor@test.com",
+            password: "123456",
+            password_confirmation: "123456",
+            role: "editor"
+        )
+    }
+
     let(:subscriber) {
         User.new(
             email: "subscriber@test.com",
@@ -48,12 +57,13 @@ RSpec.describe PostsPolicy do
         )
     }
 
-    Post object
+    # Post object
     let(:restricted_post) {
         Post.new(
             title: "Test post",
             content: "Test content",
-            status: :restricted
+            status: :restricted,
+            user_id: post_editor.id
         )
     }
 
@@ -83,6 +93,27 @@ RSpec.describe PostsPolicy do
         it 'returns true if post status is published and/or role is subscriber or above' do
             post_policy = PostsPolicy.show?(editor, restricted_post)
             expect( post_policy ).to eq(true)
+        end
+    end
+
+    describe '.edit?' do
+        context 'when user role is editor' do
+            it 'returns true if post belongs to the same editor' do
+                post_policy = PostsPolicy.edit?(editor, restricted_post)
+                expect( post_policy ).to eq(true)
+            end
+
+            it 'returns false if post does not belong to the same editor' do
+                post_policy = PostsPolicy.edit?(editor, restricted_post)
+                expect( post_policy ).to eq(false)
+            end
+        end
+
+        context 'when user role is above editor' do
+            it 'returns true' do
+                post_policy = PostsPolicy.edit?(moderator, restricted_post)
+                expect( post_policy ).to eq(true)
+            end
         end
     end
 
