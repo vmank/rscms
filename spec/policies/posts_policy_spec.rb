@@ -130,4 +130,33 @@ RSpec.describe PostsPolicy do
         end
     end
 
+
+    describe '.update?' do
+        context 'when user role is editor' do
+            it 'returns true if post belongs to the same editor' do
+                post_policy = PostsPolicy.update?(post_editor, restricted_post)
+                expect( post_policy ).to eq(true)
+            end
+
+            it 'returns false if post does not belong to the same editor' do
+                post_policy = PostsPolicy.update?(editor, restricted_post)
+                expect( post_policy ).to eq(false)
+            end
+        end
+
+        context 'when user role is above editor' do
+            it 'returns true' do
+                post_policy = PostsPolicy.update?(moderator, restricted_post)
+                expect( post_policy ).to eq(true)
+            end
+        end
+
+        context 'when user role is below editor' do
+            it 'returns false' do
+                post_policy = PostsPolicy.update?(normal, restricted_post)
+                expect( post_policy ).to eq(false)
+            end
+        end
+    end
+
 end
