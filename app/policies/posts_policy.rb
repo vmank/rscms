@@ -1,7 +1,7 @@
 class PostsPolicy
     attr_reader :user, :post
 
-    def initialize(user, post = :empty)
+    def initialize(user, post = nil)
         @post = post
         @user = user
     end
@@ -20,19 +20,19 @@ class PostsPolicy
     end
 
     def self.edit?(user, post)
-        new(user).edit?
+        new(user, post).edit?
     end
 
 
 
     def new?
         # If user role is editor or above(refer to User model)
-        User.roles[user.role] > 1
+        user.editor? || user.moderator? || user.admin?
     end
 
     def create?
         # If user role is editor or above(refer to User model)
-        User.roles[user.role] > 1
+        user.editor? || user.moderator? || user.admin?
     end
 
     def show?
@@ -44,6 +44,13 @@ class PostsPolicy
     end
 
     def edit?
+        if user.editor? && post.owned_by?(user)
+            return true
+        elsif user.moderator? || user.admin?
+            return true
+        else
+            return false
+        end
     end
 
 

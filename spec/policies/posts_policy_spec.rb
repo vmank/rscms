@@ -23,6 +23,7 @@ RSpec.describe PostsPolicy do
 
     let(:editor) {
         User.new(
+            id: 1,
             email: "editor@test.com",
             password: "123456",
             password_confirmation: "123456",
@@ -32,6 +33,7 @@ RSpec.describe PostsPolicy do
 
     let(:post_editor) {
         User.new(
+            id: 2,
             email: "post_editor@test.com",
             password: "123456",
             password_confirmation: "123456",
@@ -60,6 +62,7 @@ RSpec.describe PostsPolicy do
     # Post object
     let(:restricted_post) {
         Post.new(
+            id: 1,
             title: "Test post",
             content: "Test content",
             status: :restricted,
@@ -75,12 +78,14 @@ RSpec.describe PostsPolicy do
 	    end
     end
 
+
     describe '.create?' do
         it 'returns true if role is editor or above' do
             post_policy = PostsPolicy.create?(moderator)
             expect( post_policy ).to eq(true)
 	    end
     end
+
 
     describe '.show?' do
         context 'when post has status restricted' do
@@ -96,10 +101,11 @@ RSpec.describe PostsPolicy do
         end
     end
 
+
     describe '.edit?' do
         context 'when user role is editor' do
             it 'returns true if post belongs to the same editor' do
-                post_policy = PostsPolicy.edit?(editor, restricted_post)
+                post_policy = PostsPolicy.edit?(post_editor, restricted_post)
                 expect( post_policy ).to eq(true)
             end
 
@@ -113,6 +119,13 @@ RSpec.describe PostsPolicy do
             it 'returns true' do
                 post_policy = PostsPolicy.edit?(moderator, restricted_post)
                 expect( post_policy ).to eq(true)
+            end
+        end
+
+        context 'when user role is below editor' do
+            it 'returns false' do
+                post_policy = PostsPolicy.edit?(normal, restricted_post)
+                expect( post_policy ).to eq(false)
             end
         end
     end
