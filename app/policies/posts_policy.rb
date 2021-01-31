@@ -67,5 +67,9 @@ class PostsPolicy
         end
     end
 
+    def destroy?
+        # If user role is moderator or above(refer to User model)
+        user.moderator? || user.admin?
+    end
 
 end
