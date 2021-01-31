@@ -12,12 +12,6 @@ class User < ApplicationRecord
 
 
 
-  def guest?
-    persisted?
-  end
-
-
-
   private
 
   def set_default_role

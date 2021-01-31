@@ -44,7 +44,7 @@ class PostsPolicy
     end
 
     def show?
-        if post.try(:restricted?) && user.try(:guest?) || user.try(:normal?)
+        if post.try(:restricted?) && ( user.nil? || user.try(:normal?) )
             return false    # Render the template for unsubscribed users
         else
             return true
