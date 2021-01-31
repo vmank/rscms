@@ -8,6 +8,9 @@ class User < ApplicationRecord
   # Permissions for each role are defined in the PostsPolicy
   enum role: [:normal, :subscriber, :editor, :moderator, :admin]
 
+  has_many :posts
+
+
 
   def guest?
     persisted?

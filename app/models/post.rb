@@ -11,6 +11,9 @@ class Post < ApplicationRecord
   #   restricted = visible for users with subscriber role and above
   enum status: [:deleted, :pending, :published, :restricted, :revise]
 
+  belongs_to :user, optional: true
+
+
 
   private
 
