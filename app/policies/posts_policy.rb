@@ -35,16 +35,16 @@ class PostsPolicy
 
     def new?
         # If user role is editor or above(refer to User model)
-        user.editor? || user.moderator? || user.admin?
+        user.try(:editor?) || user.try(:moderator?) || user.try(:admin?)
     end
 
     def create?
         # If user role is editor or above(refer to User model)
-        user.editor? || user.moderator? || user.admin?
+        user.try(:editor?) || user.try(:moderator?) || user.try(:admin?)
     end
 
     def show?
-        if post.restricted? && user.guest? || user.normal?
+        if post.try(:restricted?) && user.try(:guest?) || user.try(:normal?)
             return false    # Render the template for unsubscribed users
         else
             return true
@@ -52,9 +52,9 @@ class PostsPolicy
     end
 
     def edit?
-        if user.editor? && post.owned_by?(user)
+        if user.try(:editor?) && post.try(:owned_by?, user)
             return true
-        elsif user.moderator? || user.admin?
+        elsif user.try(:moderator?) || user.try(:admin?)
             return true
         else
             return false
@@ -62,9 +62,9 @@ class PostsPolicy
     end
 
     def update?
-        if user.editor? && post.owned_by?(user)
+        if user.try(:editor?) && post.try(:owned_by?, user)
             return true
-        elsif user.moderator? || user.admin?
+        elsif user.try(:moderator?) || user.try(:admin?)
             return true
         else
             return false
@@ -73,7 +73,7 @@ class PostsPolicy
 
     def destroy?
         # If user role is moderator or above(refer to User model)
-        user.moderator? || user.admin?
+        user.try(:moderator?) || user.try(:admin?)
     end
 
 end

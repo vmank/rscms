@@ -11,6 +11,12 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    if PostsPolicy.show?(current_user, @post)
+			render :show
+		else
+      head :unauthorized
+      # Render generic template
+		end
   end
 
   # GET /posts/new
