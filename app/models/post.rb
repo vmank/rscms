@@ -9,7 +9,7 @@ class Post < ApplicationRecord
   #   pending = pending review
   #   published = visible for everyone
   #   restricted = visible for users with subscriber role and above
-  enum status: [:deleted, :pending, :published, :restricted]
+  enum status: [:deleted, :pending, :published, :restricted, :revise]
 
 
   private

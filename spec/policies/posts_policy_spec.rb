@@ -67,7 +67,7 @@ RSpec.describe PostsPolicy do
 
     describe '.create?' do
         it 'returns true if role is editor or above' do
-            post_policy = PostsPolicy.create?(editor)
+            post_policy = PostsPolicy.create?(moderator)
             expect( post_policy ).to eq(true)
 	    end
     end
