@@ -14,8 +14,7 @@ class PostsController < ApplicationController
     if PostsPolicy.show?(current_user, @post)
 			render :show
 		else
-      head :unauthorized
-      # Render generic template
+      render "generic/unauthorized"
 		end
   end
 
@@ -24,8 +23,7 @@ class PostsController < ApplicationController
     if PostsPolicy.new?(current_user)
 			@post = Post.new
 		else
-      head :unauthorized
-      # Render generic template
+      render "generic/unauthorized"
 		end
   end
 
@@ -34,8 +32,7 @@ class PostsController < ApplicationController
     if PostsPolicy.edit?(current_user, @post)
 			render :edit
 		else
-      head :unauthorized
-      # Render generic template
+      render "generic/unauthorized"
 		end
   end
 
@@ -57,8 +54,7 @@ class PostsController < ApplicationController
       end
 
     else
-      head :unauthorized
-      # Render generic template
+      render "generic/unauthorized"
     end
   end
 
@@ -78,8 +74,7 @@ class PostsController < ApplicationController
       end
 
     else
-      head :unauthorized
-      # Render generic template
+      render "generic/unauthorized"
     end
   end
 
@@ -95,8 +90,7 @@ class PostsController < ApplicationController
       end
 
     else
-      head :unauthorized
-      # Render generic template
+      render "generic/unauthorized"
     end
   end
 
